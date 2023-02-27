@@ -192,6 +192,7 @@ const Home = () => {
                             {demoData7.map((item, i) => {
                                 if (i <= 3)
                                     return <ProductCard key={i} item={item} />;
+                                else return <></>;
                             })}
                         </div>
                     </div>
