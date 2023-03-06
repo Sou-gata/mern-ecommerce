@@ -1,18 +1,6 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
-
-const createRandomColor = () => {
-    let colArr = [];
-    for (let i = 0; i < 3; i++) {
-        let single = Math.floor(Math.random() * 256).toString();
-        colArr.push(single);
-    }
-    let r = colArr[0];
-    let g = colArr[1];
-    let b = colArr[2];
-    let color = `rgb(${r},${g},${b})`;
-    return color;
-};
+import Color from "./Color";
 
 const demoData = ["Headphone", "Laptop", "Mobile", "Speaker", "Tablet", "Wire"];
 const demoData2 = [
@@ -104,24 +92,7 @@ const StoreLeft = () => {
                         </div>
                         <h5 className="sub-title">Colours</h5>
                         <div className="colors">
-                            <ul>
-                                {(() => {
-                                    let ele = [];
-                                    for (let i = 0; i < 40; i++) {
-                                        let color = createRandomColor();
-                                        let li = (
-                                            <li
-                                                key={i}
-                                                style={{
-                                                    backgroundColor: color,
-                                                }}
-                                            ></li>
-                                        );
-                                        ele.push(li);
-                                    }
-                                    return ele;
-                                })()}
-                            </ul>
+                            <Color count={40} />
                         </div>
                         <h5 className="sub-title">Size</h5>
                         <div className="size">

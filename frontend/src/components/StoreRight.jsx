@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ProductCard from "../components/ProductCard";
 
 const demoData = {
-    src: "images/f-mobile.png",
+    src: "/images/f-mobile.png",
     brand: "Samsung",
     title: "Samsung Galaxy S20 FE 5G 8GB,128GB (Cloud Lavender)",
     star: "4.5",
@@ -55,25 +55,25 @@ const StoreRight = () => {
                             <div className="d-flex gap-10 align-items-center grid">
                                 <img
                                     onClick={() => setGrid(3)}
-                                    src="images/gr4.svg"
+                                    src="/images/gr4.svg"
                                     alt="grid"
                                     className="d-block img-fluid"
                                 />
                                 <img
                                     onClick={() => setGrid(4)}
-                                    src="images/gr3.svg"
+                                    src="/images/gr3.svg"
                                     alt="grid"
                                     className="d-block img-fluid"
                                 />
                                 <img
                                     onClick={() => setGrid(6)}
-                                    src="images/gr2.svg"
+                                    src="/images/gr2.svg"
                                     alt="grid"
                                     className="d-block img-fluid"
                                 />
                                 <img
                                     onClick={() => setGrid(12)}
-                                    src="images/gr.svg"
+                                    src="/images/gr.svg"
                                     alt="grid"
                                     className="d-block img-fluid"
                                 />

@@ -6,39 +6,40 @@ import HomeSectionTwo from "../components/HomeSectionTwo";
 import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import { Link } from "react-router-dom";
+import Meta from "../components/Meta";
 
 const demoData5 = [
-    { src: "images/brand-01.png" },
-    { src: "images/brand-02.png" },
-    { src: "images/brand-03.png" },
-    { src: "images/brand-04.png" },
-    { src: "images/brand-05.png" },
-    { src: "images/brand-06.png" },
-    { src: "images/brand-07.png" },
-    { src: "images/brand-08.png" },
+    { src: "/images/brand-01.png" },
+    { src: "/images/brand-02.png" },
+    { src: "/images/brand-03.png" },
+    { src: "/images/brand-04.png" },
+    { src: "/images/brand-05.png" },
+    { src: "/images/brand-06.png" },
+    { src: "/images/brand-07.png" },
+    { src: "/images/brand-08.png" },
 ];
 
 const demoData6 = [
     {
-        img: "images/blog-1.jpg",
+        img: "/images/blog-1.jpg",
         date: "12 Dec, 2022",
         title: "A Beautiful Sunday Morning ...",
         desc: "You're only as good as your last collection, which is an enormous pressure. I think there is something about...",
     },
     {
-        img: "images/blog-2.jpg",
+        img: "/images/blog-2.jpg",
         date: "12 Dec, 2022",
         title: "sed ut practice under omnis...",
         desc: "to enjoy alternately the sight of their distress. he really shouted with pleasure; and shaking monsreur du bois...",
     },
     {
-        img: "images/blog-3.jpg",
+        img: "/images/blog-3.jpg",
         date: "12 Dec, 2022",
         title: "Lorem ipsum dolor sit amet.",
         desc: "You're only as good as your last collection, which is an enormous pressure. I think there is something about...",
     },
     {
-        img: "images/blog-4.jpg",
+        img: "/images/blog-4.jpg",
         date: "12 Dec, 2022",
         title: "Lorem ipsum dolor sit amet.",
         desc: "You're only as good as your last collection, which is an enormous pressure. I think there is something about...",
@@ -47,42 +48,42 @@ const demoData6 = [
 
 const demoData7 = [
     {
-        src: "images/f-camera.png",
+        src: "/images/f-camera.png",
         brand: "Canon",
         title: "Canon EOS 3000D 18MP Digital SLR 18-55mm",
         star: "4",
         price: "33,590",
     },
     {
-        src: "images/f-headphone.png",
+        src: "/images/f-headphone.png",
         brand: "Boat",
         title: "boAt BassHeads 950v2 Wired Over Ear Headphones",
         star: "4.5",
         price: "1,999",
     },
     {
-        src: "images/f-mobile.png",
+        src: "/images/f-mobile.png",
         brand: "Samsung",
         title: "Samsung Galaxy S20 FE 5G 8GB,128GB (Cloud Lavender)",
         star: "4.5",
         price: "29,999",
     },
     {
-        src: "images/f-speaker.png",
+        src: "/images/f-speaker.png",
         brand: "ZEBRONICS",
         title: "ZEBRONICS Zeb-Action Wireless 10W Portable Speaker",
         star: "3.5",
         price: "1,299",
     },
     {
-        src: "images/f-tab.png",
+        src: "/images/f-tab.png",
         brand: "Xiaomi",
         title: "Xiaomi Pad 5 Qualcomm Snapdragon 860 120Hz 6GB, 128GB",
         star: "4",
         price: "26,999",
     },
     {
-        src: "images/f-watch.png",
+        src: "/images/f-watch.png",
         brand: "Fire-Boltt",
         title: "Fire-Boltt Ninja Call Pro Plus 1.83 Smart Watch 240x280 Pixel",
         star: "4.5",
@@ -93,6 +94,7 @@ const demoData7 = [
 const Home = () => {
     return (
         <>
+            <Meta title="Home" />
             <HomeSectionOne />
             <HomeSectionTwo />
             <section className="featured-wrapper py-3 home-wrapper-2">

@@ -3,25 +3,25 @@ import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
 const demoData = [
     {
-        src: "images/catbanner-01.jpg",
+        src: "/images/catbanner-01.jpg",
         h4: "Best Sale",
         h5: "Laptops Max",
         p: "From $1699.00 or $64.62/mo.",
     },
     {
-        src: "images/catbanner-02.jpg",
+        src: "/images/catbanner-02.jpg",
         h4: "NEW ARRIVAL",
         h5: "Buy IPad Air",
         p: "From $599.00 or $49.91/mo.",
     },
     {
-        src: "images/catbanner-03.jpg",
+        src: "/images/catbanner-03.jpg",
         h4: "15% off",
         h5: "Smartwatch 7",
         p: "shop the latest band styles and colors.",
     },
     {
-        src: "images/catbanner-04.jpg",
+        src: "/images/catbanner-04.jpg",
         h4: "Free engraving",
         h5: "AirPods Max",
         p: "High-fidelity playback & ultra-low distortion",
@@ -29,13 +29,13 @@ const demoData = [
 ];
 const demoData2 = [
     {
-        src: "images/main-banner-1.jpg",
+        src: "/images/main-banner-1.jpg",
         h4: "Supercharged for pros.",
         h5: "iPad s13+ Pro.",
         p: "From $999.00 of 41.62/mo.for 24 mo. Footnote*",
     },
     {
-        src: "images/main-banner.jpg",
+        src: "/images/main-banner.jpg",
         h4: "Supercharged for pros.",
         h5: "Speacial Sale",
         p: "From $999.00 of 41.62/mo.for 24 mo. Footnote*",

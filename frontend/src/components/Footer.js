@@ -11,7 +11,7 @@ const Footer = () => {
                         <div className="col-6">
                             <div className="footer-top-data d-flex gap-30 align-items-center justify-content-center">
                                 <img
-                                    src="images/newsletter.png"
+                                    src="/images/newsletter.png"
                                     alt="newsletter"
                                 />
                                 <h4 className="mb-0 text-white">
@@ -95,19 +95,34 @@ const Footer = () => {
                         <div className="col-3">
                             <h5 className="text-white mb-4">Information</h5>
                             <div className="footer-links d-flex flex-column">
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/privacy-policy"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Privacy Policy
                                 </Link>
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/refund-policy"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Return Policy
                                 </Link>
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/shipping-policy"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Shopping Policy
                                 </Link>
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/term-conditions"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Terms & Conditions
                                 </Link>
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/blogs"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Blogs
                                 </Link>
                             </div>
@@ -116,15 +131,15 @@ const Footer = () => {
                             <h5 className="text-white mb-4">Account</h5>
                             <div className="footer-links d-flex flex-column">
                                 <Link className="text-white py-2 mb-1">
-                                    About
+                                    About Us
                                 </Link>
                                 <Link className="text-white py-2 mb-1">
                                     FAQ
                                 </Link>
-                                <Link className="text-white py-2 mb-1">
-                                    Tablets
-                                </Link>
-                                <Link className="text-white py-2 mb-1">
+                                <Link
+                                    to="/contact"
+                                    className="text-white py-2 mb-1"
+                                >
                                     Contact Us
                                 </Link>
                             </div>

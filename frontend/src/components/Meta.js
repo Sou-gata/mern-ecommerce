@@ -4,7 +4,7 @@ const Meta = ({ title }) => {
     return (
         <>
             <Helmet>
-                <title>{title}</title>
+                <title>E Commerse App | {title}</title>
             </Helmet>
         </>
     );

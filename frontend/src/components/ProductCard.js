@@ -12,10 +12,10 @@ const ProductCard = ({ item, grid }) => {
                     location.pathname === "/store" ? `gr-${grid}` : "col-2"
                 }`}
             >
-                <Link className="product-card">
+                <Link to="/product/id" className="product-card">
                     <div className="wishlist-icon">
                         <Link>
-                            <img src="images/wish.svg" alt="wish" />
+                            <img src="/images/wish.svg" alt="wish" />
                         </Link>
                     </div>
                     <div className="product-image">
@@ -40,15 +40,15 @@ const ProductCard = ({ item, grid }) => {
                         <div className="d-flex flex-column gap-15">
                             <Link>
                                 <img
-                                    src="images/prodcompare.svg"
+                                    src="/images/prodcompare.svg"
                                     alt="compare"
                                 />
                             </Link>
                             <Link>
-                                <img src="images/view.svg" alt="view" />
+                                <img src="/images/view.svg" alt="view" />
                             </Link>
                             <Link>
-                                <img src="images/add-cart.svg" alt="cart" />
+                                <img src="/images/add-cart.svg" alt="cart" />
                             </Link>
                         </div>
                     </div>
