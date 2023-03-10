@@ -1,0 +1,109 @@
+.trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    height: 64px;
+    margin: 0 0 10px 0;
+    background: #001529;
+}
+.logo h2 {
+    color: #fff;
+    text-align: center;
+}
+.ant-layout {
+    height: 100vh;
+}
+.ant-layout-sider {
+    flex: 0 0 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+    width: 250px !important;
+}
+.ant-layout-sider-collapsed {
+    flex: 0 0 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    width: 80px !important;
+}
+.sm-logo {
+    display: none;
+}
+.ant-layout-sider-collapsed .sm-logo {
+    display: block;
+}
+.lg-logo {
+    display: block;
+}
+.ant-layout-sider-collapsed .lg-logo {
+    display: none;
+}
+.ant-menu-title-content {
+    font-size: 15px;
+}
+.dropdown-toggle::after {
+    display: none;
+}
+.dropdown-item {
+    line-height: 30px;
+}
+.dp-container img {
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    box-shadow: 1px 0 0px black, 0 1px 0 black, -1px 0 0 black, 0 -1px 0 black;
+}
+.user-details {
+    margin-left: 15px;
+}
+.user-details h5 {
+    margin: 0;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.user-details p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font: 400;
+    line-height: 16px;
+    color: #777;
+}
+.header-notification {
+    position: relative;
+    margin-right: 10px;
+}
+.header-notification span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ffd333;
+    border-radius: 50%;
+    top: 16px;
+    right: -6px;
+    line-height: 18px;
+    text-align: center;
+    font-weight: 500;
+}
+main {
+    overflow-y: scroll;
+    background-color: transparent !important;
+}
+main::-webkit-scrollbar {
+    width: 0;
+}
+.green {
+    color: #00dd00;
+}
+.red {
+    color: #ff0000;
+}
