@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { Link } from "react-router-dom";
+import Container from "./Container";
 const demoData = [
     {
         src: "/images/catbanner-01.jpg",
@@ -49,60 +50,52 @@ const HomeSectionOne = () => {
         setIndex(selectedIndex);
     };
     return (
-        <section className="home-wrapper-1 py-3">
-            <div className="container-xxl">
-                <div className="row">
-                    <div className="col-6 main-banner py-2 position-relative">
-                        <Carousel activeIndex={index} onSelect={handleSelect}>
-                            {demoData2.map((item, i) => {
-                                return (
-                                    <Carousel.Item key={i}>
-                                        <div className="carousel-item active">
-                                            <img
-                                                className="img-fluid rounded-3"
-                                                src={item.src}
-                                                alt="main-banner"
-                                            />
-                                            <div className="main-banner-content">
-                                                <h4>{item.h4}</h4>
-                                                <h5>{item.h5}</h5>
-                                                <p>{item.p}</p>
-                                                <Link className="button">
-                                                    BUY NOW
-                                                </Link>
-                                            </div>
-                                        </div>
-                                    </Carousel.Item>
-                                );
-                            })}
-                        </Carousel>
-                    </div>
-                    <div className="col-6">
-                        <div className="d-flex flex-wrap justify-content-between align-items-center">
-                            {demoData.map((item, i) => {
-                                return (
-                                    <div
-                                        key={i}
-                                        className="small-banner py-2 position-relative"
-                                    >
-                                        <img
-                                            className="img-fluid rounded-3"
-                                            src={item.src}
-                                            alt="main-banner"
-                                        />
-                                        <div className="small-banner-content">
-                                            <h4>{item.h4}</h4>
-                                            <h5>{item.h5}</h5>
-                                            <p>{item.p}</p>
-                                        </div>
+        <Container class1="home-wrapper-1 py-3">
+            <div className="row">
+                <div className="col-6 main-banner py-2 position-relative">
+                    <Carousel activeIndex={index} onSelect={handleSelect}>
+                        {demoData2.map((item, i) => (
+                            <Carousel.Item key={i}>
+                                <div className="carousel-item active">
+                                    <img
+                                        className="img-fluid rounded-3"
+                                        src={item.src}
+                                        alt="main-banner"
+                                    />
+                                    <div className="main-banner-content">
+                                        <h4>{item.h4}</h4>
+                                        <h5>{item.h5}</h5>
+                                        <p>{item.p}</p>
+                                        <Link className="button">BUY NOW</Link>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                </div>
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+                </div>
+                <div className="col-6">
+                    <div className="d-flex flex-wrap justify-content-between align-items-center">
+                        {demoData.map((item, i) => (
+                            <div
+                                key={i}
+                                className="small-banner py-2 position-relative"
+                            >
+                                <img
+                                    className="img-fluid rounded-3"
+                                    src={item.src}
+                                    alt="main-banner"
+                                />
+                                <div className="small-banner-content">
+                                    <h4>{item.h4}</h4>
+                                    <h5>{item.h5}</h5>
+                                    <p>{item.p}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
-        </section>
+        </Container>
     );
 };
 

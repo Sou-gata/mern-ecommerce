@@ -25,8 +25,6 @@ const Footer = () => {
                                     type="text"
                                     className="form-control py-1"
                                     placeholder="Your Email Address"
-                                    aria-label="Your Email Address"
-                                    arial-aria-describedby="basic-addon2"
                                 />
                                 <span
                                     className="input-group-text p-2"

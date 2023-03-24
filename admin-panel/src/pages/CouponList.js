@@ -1,95 +1,106 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "no",
-        key: "no",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        key: "quantity",
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
-    },
-    {
-        title: "Status",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color;
-                    if (tag?.toLocaleLowerCase() === "success") {
-                        color = "green";
-                    } else if (tag?.toLocaleLowerCase() === "pending") {
-                        color = "geekblue";
-                    } else {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <p>Delete</p>
-            </Space>
-        ),
-    },
-];
-const data2 = [
-    {
-        key: "1",
-        no: "#12345",
-        quantity: "2",
-        price: 100,
-        name: "John Brown",
-        tags: ["success"],
-    },
-    {
-        key: "2",
-        no: "#07684",
-        quantity: "1",
-        price: 100,
-        name: "Jim Green",
-        tags: ["Pending"],
-    },
-    {
-        key: "3",
-        no: "#07689",
-        quantity: "3",
-        price: 100,
-        name: "Joe Black",
-        tags: ["faild"],
-    },
-];
+import { deleteCoupon, getCoupons } from "../features/coupon/couponSlice";
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { useDispatch } from "react-redux";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { pad, addCommaToPrice } from "../utils/extraFunctions";
+import CustomPopup from "../components/CustomPopup";
 
 const CouponList = () => {
+    const dispatch = useDispatch();
+    const [tableData, setTableData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [idToDelete, setId] = useState("");
+    useEffect(() => {
+        const getData = async () => {
+            let info = await dispatch(getCoupons());
+            info = info.payload;
+            let temp = [];
+            for (let i = 0; i < info?.length; i++) {
+                const expDateTime = new Date(info[i]?.expiry);
+                const expDate =
+                    pad(expDateTime.getDate()) +
+                    "-" +
+                    pad(expDateTime.getMonth() + 1) +
+                    "-" +
+                    expDateTime.getFullYear();
+                temp.push({
+                    key: info[i]._id,
+                    no: i + 1,
+                    code: info[i].name,
+                    discount: info[i].discount,
+                    max: info[i].discountAbove,
+                    expDate: expDate,
+                });
+            }
+            setTableData(temp);
+        };
+        getData();
+    }, [dispatch]);
+    const columns = [
+        {
+            title: "No",
+            dataIndex: "no",
+            key: "no",
+            width: 50,
+        },
+        {
+            title: "Coupon code",
+            dataIndex: "code",
+            key: "code",
+        },
+        {
+            title: "Discount",
+            dataIndex: "discount",
+            key: "discount",
+            render: (text) => <p className="mb-0">{text} %</p>,
+        },
+        {
+            title: "Maximum Discount",
+            dataIndex: "max",
+            key: "max",
+            render: (text) => <p className="mb-0">₹ {addCommaToPrice(text)}</p>,
+        },
+        {
+            title: "Expairy Date",
+            dataIndex: "expDate",
+            key: "expDate",
+        },
+        {
+            title: "Action",
+            key: "action",
+            width: 175,
+            render: (_, record) => {
+                return (
+                    <div className="d-flex brand-action">
+                        <Link to={`/admin/coupon/${record.key}`}>
+                            <AiOutlineEdit />
+                        </Link>
+                        <button
+                            onClick={() => {
+                                setOpen(true);
+                                setId(record.key);
+                            }}
+                        >
+                            <AiOutlineDelete />
+                        </button>
+                    </div>
+                );
+            },
+        },
+    ];
     return (
         <div>
             <h3 className="mb-4 title">Coupon List</h3>
-            <Table columns={columns} dataSource={data2} />
+            <Table columns={columns} dataSource={tableData} />
+            <CustomPopup
+                open={{ open, setOpen }}
+                func={deleteCoupon}
+                id={idToDelete}
+                tableData={{ tableData, setTableData }}
+                name="coupon"
+            />
         </div>
     );
 };

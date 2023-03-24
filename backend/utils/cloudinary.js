@@ -1,4 +1,6 @@
 const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+dotenv.config();
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -7,18 +9,12 @@ cloudinary.config({
 });
 
 const cloudinaryUploadImg = async (fileToUpload) => {
-    return new Promise((resolve) => {
-        cloudinary.uploader.upload(fileToUpload, (result) => {
-            resolve(
-                {
-                    url: result.secure_url,
-                    asset_id: result.asset_id,
-                    publi_id: result.publi_id,
-                },
-                { resource_type: "auto" }
-            );
-        });
-    });
+    const res = await cloudinary.uploader.upload(fileToUpload);
+    return {
+        url: res.url,
+        asset_id: res.asset_id,
+        public_id: res.public_id,
+    };
 };
 
 const cloudinaryDeleteImg = async (fileToDelete) => {
@@ -26,9 +22,9 @@ const cloudinaryDeleteImg = async (fileToDelete) => {
         cloudinary.uploader.destroy(fileToDelete, (result) => {
             resolve(
                 {
-                    url: result.secure_url,
-                    asset_id: result.asset_id,
-                    publi_id: result.publi_id,
+                    url: result?.secure_url,
+                    asset_id: result?.asset_id,
+                    publi_id: result?.publi_id,
                 },
                 { resource_type: "auto" }
             );

@@ -28,16 +28,18 @@ const productSchema = new mongoose.Schema(
         quantity: {
             type: Number,
             require: true,
-            select: false,
         },
         images: {
-            type: Array,
-        },
-        color: {
-            type: Array,
+            type: [
+                {
+                    url: String,
+                    public_id: String,
+                },
+            ],
         },
         tags: {
-            type: Array,
+            type: String,
+            required: true,
         },
         rating: [
             {

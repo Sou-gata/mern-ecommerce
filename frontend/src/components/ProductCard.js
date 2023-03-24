@@ -12,47 +12,53 @@ const ProductCard = ({ item, grid }) => {
                     location.pathname === "/store" ? `gr-${grid}` : "col-2"
                 }`}
             >
-                <Link to="/product/id" className="product-card">
+                <div className="product-card">
                     <div className="wishlist-icon">
-                        <Link>
+                        <button>
                             <img src="/images/wish.svg" alt="wish" />
-                        </Link>
+                        </button>
                     </div>
-                    <div className="product-image">
-                        <img src={item?.src} alt="" />
-                    </div>
-                    <div className="product-details">
-                        <h6 className="brand">{item?.brand}</h6>
-                        <h5 className="product-title">{item?.title}</h5>
-                        <ReactStars
-                            count={5}
-                            size={20}
-                            value={parseFloat(item?.star)}
-                            isHalf={true}
-                            edit={false}
-                        />
-                        {grid === 12 && (
-                            <p className="description">{item?.description}</p>
-                        )}
-                        <p className="price">₹ {item?.price}</p>
-                    </div>
+                    <Link to="/product/id">
+                        <div className="product-image">
+                            <img src={item?.src} alt="" />
+                        </div>
+                    </Link>
+                    <Link to="/product/id">
+                        <div className="product-details">
+                            <h6 className="brand">{item?.brand}</h6>
+                            <h5 className="product-title">{item?.title}</h5>
+                            <ReactStars
+                                count={5}
+                                size={20}
+                                value={parseFloat(item?.star)}
+                                isHalf={true}
+                                edit={false}
+                            />
+                            {grid === 12 && (
+                                <p className="description">
+                                    {item?.description}
+                                </p>
+                            )}
+                            <p className="price">₹ {item?.price}</p>
+                        </div>
+                    </Link>
                     <div className="action-bar">
                         <div className="d-flex flex-column gap-15">
-                            <Link>
+                            <button>
                                 <img
                                     src="/images/prodcompare.svg"
                                     alt="compare"
                                 />
-                            </Link>
-                            <Link>
+                            </button>
+                            <button>
                                 <img src="/images/view.svg" alt="view" />
-                            </Link>
-                            <Link>
+                            </button>
+                            <button>
                                 <img src="/images/add-cart.svg" alt="cart" />
-                            </Link>
+                            </button>
                         </div>
                     </div>
-                </Link>
+                </div>
             </div>
         </>
     );

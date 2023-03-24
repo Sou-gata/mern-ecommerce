@@ -1,29 +1,28 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
     AiOutlineDashboard,
     AiOutlineUser,
     AiOutlineShoppingCart,
-    AiOutlineBgColors,
 } from "react-icons/ai";
 import { BiCategoryAlt } from "react-icons/bi";
-import { FaReact, FaBlog } from "react-icons/fa";
+import { FaReact } from "react-icons/fa";
 import {
     BsCartPlus,
     BsQuestionCircle,
     BsFillTicketPerforatedFill,
 } from "react-icons/bs";
 import { FiBook } from "react-icons/fi";
-import { TbBrandBlogger } from "react-icons/tb";
-import { ImBlog, ImTicket } from "react-icons/im";
+import { ImTicket } from "react-icons/im";
 import { IoIosNotifications } from "react-icons/io";
 import { IoTicketOutline } from "react-icons/io5";
 import { HiOutlineClipboardDocumentList as HiClipboard } from "react-icons/hi2";
-
-import { useNavigate } from "react-router-dom";
 
 const MainLayout = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -32,6 +31,12 @@ const MainLayout = () => {
         token: { colorBgContainer },
     } = theme.useToken();
     const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
+    useEffect(() => {
+        if (localStorage.getItem("user") === null) {
+            navigate("/");
+        }
+    }, [navigate]);
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -80,7 +85,7 @@ const MainLayout = () => {
                                 {
                                     key: "brand",
                                     icon: <FaReact className="fs-4" />,
-                                    label: "Brand",
+                                    label: "Add Brand",
                                 },
                                 {
                                     key: "list-brand",
@@ -90,24 +95,12 @@ const MainLayout = () => {
                                 {
                                     key: "category",
                                     icon: <BiCategoryAlt className="fs-4" />,
-                                    label: "Category",
+                                    label: "Add Category",
                                 },
                                 {
                                     key: "list-category",
                                     icon: <HiClipboard className="fs-4" />,
                                     label: "Category List",
-                                },
-                                {
-                                    key: "color",
-                                    icon: (
-                                        <AiOutlineBgColors className="fs-4" />
-                                    ),
-                                    label: "Colour",
-                                },
-                                {
-                                    key: "list-color",
-                                    icon: <HiClipboard className="fs-4" />,
-                                    label: "Colour List",
                                 },
                             ],
                         },
@@ -115,33 +108,6 @@ const MainLayout = () => {
                             key: "orders",
                             icon: <AiOutlineShoppingCart className="fs-4" />,
                             label: "Orders",
-                        },
-                        {
-                            key: "blogs",
-                            icon: <TbBrandBlogger className="fs-4" />,
-                            label: "Blogs",
-                            children: [
-                                {
-                                    key: "blog",
-                                    icon: <ImBlog className="fs-4" />,
-                                    label: "Add Blog",
-                                },
-                                {
-                                    key: "list-blog",
-                                    icon: <TbBrandBlogger className="fs-4" />,
-                                    label: "Blog List",
-                                },
-                                {
-                                    key: "blog-category",
-                                    icon: <FaBlog className="fs-4" />,
-                                    label: "Add Blog Category",
-                                },
-                                {
-                                    key: "blog-category-list",
-                                    icon: <HiClipboard className="fs-4" />,
-                                    label: "Blog Category List",
-                                },
-                            ],
                         },
                         {
                             key: "enquiries",
@@ -208,8 +174,10 @@ const MainLayout = () => {
                                             />
                                         </div>
                                         <div className="user-details d-flex justify-content-center flex-column">
-                                            <h5>Sougata Talukdar</h5>
-                                            <p>sougatatalukdar77@gmail.com</p>
+                                            <h5>
+                                                {`${user?.firstname}  ${user?.lastname}`}
+                                            </h5>
+                                            <p>{user?.email}</p>
                                         </div>
                                     </div>
 
@@ -226,12 +194,17 @@ const MainLayout = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link
-                                                to="/"
+                                            <button
                                                 className="dropdown-item mb-0"
+                                                onClick={() => {
+                                                    localStorage.removeItem(
+                                                        "user"
+                                                    );
+                                                    navigate("/");
+                                                }}
                                             >
                                                 Sign Out
-                                            </Link>
+                                            </button>
                                         </li>
                                     </ul>
                                 </div>
@@ -247,6 +220,17 @@ const MainLayout = () => {
                         background: colorBgContainer,
                     }}
                 >
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={1000}
+                        hideProgressBar={false}
+                        newestOnTop={true}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        theme="light"
+                    />
                     <Outlet />
                 </Content>
             </Layout>

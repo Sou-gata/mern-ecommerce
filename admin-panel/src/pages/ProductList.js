@@ -1,95 +1,96 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "no",
-        key: "no",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        key: "quantity",
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
-    },
-    {
-        title: "Status",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color;
-                    if (tag?.toLocaleLowerCase() === "success") {
-                        color = "green";
-                    } else if (tag?.toLocaleLowerCase() === "pending") {
-                        color = "geekblue";
-                    } else {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <p>Delete</p>
-            </Space>
-        ),
-    },
-];
-const data2 = [
-    {
-        key: "1",
-        no: "#12345",
-        quantity: "2",
-        price: 100,
-        name: "John Brown",
-        tags: ["success"],
-    },
-    {
-        key: "2",
-        no: "#07684",
-        quantity: "1",
-        price: 100,
-        name: "Jim Green",
-        tags: ["Pending"],
-    },
-    {
-        key: "3",
-        no: "#07689",
-        quantity: "3",
-        price: 100,
-        name: "Joe Black",
-        tags: ["faild"],
-    },
-];
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { useDispatch } from "react-redux";
+import { getProducts, deleteProduct } from "../features/product/productSlice";
+import { AiFillEye, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addCommaToPrice } from "../utils/extraFunctions";
+import CustomPopup from "../components/CustomPopup";
 
 const ProductList = () => {
+    const dispatch = useDispatch();
+    const [tableData, setTableData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [idToDelete, setId] = useState("");
+    useEffect(() => {
+        const getData = async () => {
+            let info = await dispatch(getProducts());
+            info = info.payload;
+            let temp = [];
+            for (let i = 0; i < info?.length; i++) {
+                temp.push({
+                    key: info[i]?._id,
+                    name: info[i]?.title,
+                    brand: info[i]?.brand,
+                    price: "₹ " + addCommaToPrice(info[i]?.price),
+                    quantity: info[i]?.quantity,
+                });
+            }
+            setTableData(temp);
+        };
+        getData();
+    }, [dispatch]);
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Brand",
+            dataIndex: "brand",
+            key: "brand",
+            width: 175,
+        },
+        {
+            title: "Price",
+            dataIndex: "price",
+            key: "price",
+            width: 100,
+        },
+        {
+            title: "Quantity",
+            dataIndex: "quantity",
+            key: "quantity",
+            width: 100,
+        },
+        {
+            title: "Action",
+            key: "action",
+            width: 180,
+            render: (_, record) => (
+                <div className="d-flex procuct-action">
+                    <Link to={`/admin/view-product/${record.key}`}>
+                        <AiFillEye />
+                    </Link>
+                    <Link to={`/admin/product/${record.key}`}>
+                        <AiOutlineEdit />
+                    </Link>
+                    <button
+                        onClick={() => {
+                            setOpen(true);
+                            setId(record.key);
+                        }}
+                    >
+                        <AiOutlineDelete />
+                    </button>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div>
             <h3 className="mb-4 title">Product List</h3>
-            <Table columns={columns} dataSource={data2} />
+            <Table columns={columns} dataSource={tableData} />
+            <CustomPopup
+                open={{ open, setOpen }}
+                func={deleteProduct}
+                id={idToDelete}
+                tableData={{ tableData, setTableData }}
+                name="product"
+            />
         </div>
     );
 };

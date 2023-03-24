@@ -1,97 +1,84 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "no",
-        key: "no",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        key: "quantity",
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
-    },
-    {
-        title: "Status",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color;
-                    if (tag?.toLocaleLowerCase() === "success") {
-                        color = "green";
-                    } else if (tag?.toLocaleLowerCase() === "pending") {
-                        color = "geekblue";
-                    } else {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <p>Delete</p>
-            </Space>
-        ),
-    },
-];
-const data2 = [
-    {
-        key: "1",
-        no: "#12345",
-        quantity: "2",
-        price: 100,
-        name: "John Brown",
-        tags: ["success"],
-    },
-    {
-        key: "2",
-        no: "#07684",
-        quantity: "1",
-        price: 100,
-        name: "Jim Green",
-        tags: ["Pending"],
-    },
-    {
-        key: "3",
-        no: "#07689",
-        quantity: "3",
-        price: 100,
-        name: "Joe Black",
-        tags: ["faild"],
-    },
-];
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { useDispatch } from "react-redux";
+import { AiFillEye, AiOutlineDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { deleteEnquiry, getEnquiries } from "../features/enquiry/enquirySlice";
+import { shortString } from "../utils/extraFunctions";
+import CustomPopup from "../components/CustomPopup";
 
 const Enquiries = () => {
+    const dispatch = useDispatch();
+    const [tableData, setTableData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [idToDelete, setId] = useState("");
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+        },
+        {
+            title: "Comment",
+            dataIndex: "comment",
+            key: "eomment",
+        },
+        {
+            title: "Action",
+            key: "action",
+            width: 175,
+            render: (_, record) => (
+                <div className="d-flex brand-action">
+                    <Link to={`/admin/enquiry/${record.key}`}>
+                        <AiFillEye />
+                    </Link>
+                    <button
+                        onClick={() => {
+                            setOpen(true);
+                            setId(record.key);
+                        }}
+                    >
+                        <AiOutlineDelete />
+                    </button>
+                </div>
+            ),
+        },
+    ];
+    useEffect(() => {
+        const getData = async () => {
+            const a = await dispatch(getEnquiries());
+            if (a.payload.success) {
+                let data = [];
+                let temp = a.payload?.data;
+                for (let i = 0; i < temp?.length || 0; i++) {
+                    data.push({
+                        key: temp[i]._id,
+                        name: temp[i].name,
+                        email: temp[i].email,
+                        comment: shortString(temp[i].comment, 60),
+                    });
+                }
+                setTableData(data);
+            }
+        };
+        getData();
+    }, [dispatch]);
     return (
         <div>
             <h3 className="mb-4 title">Enquiries</h3>
-            <div>
-                <Table columns={columns} dataSource={data2} />
-            </div>
+            <Table columns={columns} dataSource={tableData} />
+            <CustomPopup
+                open={{ open, setOpen }}
+                func={deleteEnquiry}
+                id={idToDelete}
+                tableData={{ tableData, setTableData }}
+                name="enquiry"
+            />
         </div>
     );
 };

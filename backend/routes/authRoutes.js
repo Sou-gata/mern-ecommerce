@@ -23,6 +23,9 @@ const {
     createOrder,
     getOrder,
     updateOrderStatus,
+    getOrders,
+    getSingleOrder,
+    verifyLogin,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -34,11 +37,13 @@ router.put("/update-order/:id", authMiddleware, isAdmin, updateOrderStatus);
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
 router.post("/admin-login", loginAdmin);
-router.post("/cart", userCart);
+router.post("/cart", authMiddleware, userCart);
 router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/cash-order", authMiddleware, createOrder);
 router.get("/all-users", getallUser);
 router.get("/get-order", authMiddleware, getOrder);
+router.get("/get-order/:id", authMiddleware, isAdmin, getSingleOrder);
+router.get("/get-orders", authMiddleware, isAdmin, getOrders);
 router.get("/refresh", handleRefreshToken);
 router.get("/logout", logOut);
 router.get("/:id", authMiddleware, isAdmin, getaUser);
@@ -50,5 +55,6 @@ router.put("/edit-user", authMiddleware, updateaUser);
 router.put("/save-address", authMiddleware, saveAddress);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
 router.put("/unblock-user/:id", authMiddleware, isAdmin, unblockUser);
+router.post("/verify-login", verifyLogin);
 
 module.exports = router;

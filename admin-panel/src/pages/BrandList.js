@@ -1,95 +1,72 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "no",
-        key: "no",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        key: "quantity",
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
-    },
-    {
-        title: "Status",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color;
-                    if (tag?.toLocaleLowerCase() === "success") {
-                        color = "green";
-                    } else if (tag?.toLocaleLowerCase() === "pending") {
-                        color = "geekblue";
-                    } else {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <p>Delete</p>
-            </Space>
-        ),
-    },
-];
-const data2 = [
-    {
-        key: "1",
-        no: "#12345",
-        quantity: "2",
-        price: 100,
-        name: "John Brown",
-        tags: ["success"],
-    },
-    {
-        key: "2",
-        no: "#07684",
-        quantity: "1",
-        price: 100,
-        name: "Jim Green",
-        tags: ["Pending"],
-    },
-    {
-        key: "3",
-        no: "#07689",
-        quantity: "3",
-        price: 100,
-        name: "Joe Black",
-        tags: ["faild"],
-    },
-];
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { useDispatch } from "react-redux";
+import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { getBrands, deleteBrand } from "../features/brand/brandSlice";
+import { Link } from "react-router-dom";
+import CustomPopup from "../components/CustomPopup";
 
 const BrandList = () => {
+    const [tableData, setTableData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [idToDelete, setId] = useState("");
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const getData = async () => {
+            let info = await dispatch(getBrands());
+            info = info.payload;
+            let temp = [];
+            for (let i = 0; i < info?.length; i++) {
+                temp.push({
+                    key: info[i]?._id,
+                    name: info[i]?.title,
+                    id: info[i]?._id,
+                });
+            }
+            setTableData(temp);
+        };
+        getData();
+    }, [dispatch]);
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+        },
+        {
+            title: "Action",
+            key: "action",
+            width: 175,
+            render: (_, record) => {
+                return (
+                    <div className="d-flex brand-action">
+                        <Link to={`/admin/brand/${record.key}`}>
+                            <AiOutlineEdit />
+                        </Link>
+                        <button
+                            onClick={() => {
+                                setOpen(true);
+                                setId(record.key);
+                            }}
+                        >
+                            <AiOutlineDelete />
+                        </button>
+                    </div>
+                );
+            },
+        },
+    ];
     return (
         <div>
             <h3 className="mb-4 title">Brand List</h3>
-            <Table columns={columns} dataSource={data2} />
+            <Table columns={columns} dataSource={tableData} />
+            <CustomPopup
+                open={{ open, setOpen }}
+                func={deleteBrand}
+                id={idToDelete}
+                tableData={{ tableData, setTableData }}
+                name="brand"
+            />
         </div>
     );
 };

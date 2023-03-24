@@ -43,8 +43,6 @@ const Header = () => {
                                     type="text"
                                     className="form-control py-2"
                                     placeholder="Search Product Here..."
-                                    aria-label="Search Product Here..."
-                                    arial-aria-describedby="basic-addon2"
                                 />
                                 <span
                                     className="input-group-text p-2"

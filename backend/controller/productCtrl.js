@@ -3,21 +3,16 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const validateMongoDbId = require("../utils/validateMongoDbId");
-const {
-    cloudinaryUploadImg,
-    cloudinaryDeleteImg,
-} = require("../utils/cloudinary");
-const fs = require("fs");
 
 const createProduct = asyncHandler(async (req, res) => {
     try {
-        if (req?.body?.title) {
-            req.body.slug = slugify(req?.body?.title);
+        if (req.body?.title) {
+            req.body.slug = slugify(req.body.title);
         }
         const newProduct = await Product.create(req.body);
-        res.json(newProduct);
+        res.json({ id: newProduct._id, success: true });
     } catch (error) {
-        throw new Error(error?.message);
+        throw new Error(error);
     }
 });
 
@@ -62,7 +57,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
         const page = req.query.page;
         const limit = req.query.limit;
         const skip = (page - 1) * limit;
-        query = query.skip(skip).lomit(limit);
+        query = query.skip(skip).limit(limit);
         if (req.query.page) {
             const productCount = await Product.countDocuments();
             if (skip >= productCount) {
@@ -84,7 +79,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         if (req.body.title) {
             req.body.slug = slugify(req.body.title);
         }
-        const update = await Product.findOneAndUpdate({ id }, req.body, {
+        const update = await Product.findOneAndUpdate(id, req.body, {
             new: true,
         });
         res.json(update);
@@ -197,39 +192,6 @@ const rating = asyncHandler(async (req, res) => {
     }
 });
 
-const uploadImages = asyncHandler(async (req, res) => {
-    try {
-        const uploader = (path) => cloudinaryUploadImg(path, "images");
-        let urls = [];
-        const files = req.files;
-        for (let file of files) {
-            const { path } = file;
-            const newPath = await uploader(path);
-            urls.push(newPath);
-            fs.unlinkSync(path);
-        }
-        const images = urls.map(
-            (file) => {
-                return file;
-            },
-            { new: true }
-        );
-        res.json(images);
-    } catch (error) {
-        throw new Error(error.message);
-    }
-});
-
-const deleteImages = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    try {
-        const deleteImg = cloudinaryDeleteImg(id, "images");
-        res.json({ ...deleteImg, message: "Deleted" });
-    } catch (error) {
-        throw new Error(error.message);
-    }
-});
-
 module.exports = {
     createProduct,
     getaProduct,
@@ -238,6 +200,4 @@ module.exports = {
     deleteProduct,
     addToWishlist,
     rating,
-    uploadImages,
-    deleteImages,
 };

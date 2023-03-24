@@ -25,9 +25,10 @@ const StoreRight = () => {
                                 name=""
                                 className="form-control form-select"
                                 id=""
+                                defaultValue="best-selling"
                             >
                                 <option value="manual">Featured</option>
-                                <option value="best-selling" selected={true}>
+                                <option value="best-selling">
                                     Best Selling
                                 </option>
                                 <option value="title-ascending">

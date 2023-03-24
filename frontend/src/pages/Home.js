@@ -7,6 +7,7 @@ import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
 import { Link } from "react-router-dom";
 import Meta from "../components/Meta";
+import Container from "../components/Container";
 
 const demoData5 = [
     { src: "/images/brand-01.png" },
@@ -90,6 +91,7 @@ const demoData7 = [
         price: "1,799",
     },
 ];
+const demoData8 = [0, 0, 0];
 
 const Home = () => {
     return (
@@ -97,145 +99,109 @@ const Home = () => {
             <Meta title="Home" />
             <HomeSectionOne />
             <HomeSectionTwo />
-            <section className="featured-wrapper py-3 home-wrapper-2">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-12">
-                            <h3 className="section-heading">
-                                Featured Collection
-                            </h3>
-                        </div>
-                        {demoData7.map((item, i) => {
-                            return <ProductCard key={i} item={item} />;
-                        })}
+            <Container class1="featured-wrapper py-3 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <h3 className="section-heading">Featured Collection</h3>
                     </div>
+                    {demoData7.map((item, i) => (
+                        <ProductCard key={i} item={item} />
+                    ))}
                 </div>
-            </section>
-            <section className="famous-wrapper py-3 home-wrapper-2">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-3">
-                            <Link className="famous-card bg-black">
+            </Container>
+            <Container class1="famous-wrapper py-3 home-wrapper-2">
+                <div className="row">
+                    <div className="col-3">
+                        <Link className="famous-card bg-black">
+                            <div className="famous-content">
+                                <h5 className="text-white">Big Screen</h5>
+                                <h6 className="text-white">
+                                    Smart Watch Series 7
+                                </h6>
+                                <p className="text-white">
+                                    From $399 or $16.62/mo. for 24 mo.*
+                                </p>
+                            </div>
+                            <img src="images/famous-watch.png" alt="famous" />
+                        </Link>
+                    </div>
+                    {demoData8.map((item, i) => (
+                        <div key={i} className="col-3">
+                            <Link className="famous-card bg-white">
                                 <div className="famous-content">
-                                    <h5 className="text-white">Big Screen</h5>
-                                    <h6 className="text-white">
-                                        Smart Watch Series 7
-                                    </h6>
-                                    <p className="text-white">
-                                        From $399 or $16.62/mo. for 24 mo.*
-                                    </p>
+                                    <h5>Big Screen</h5>
+                                    <h6>Smart Watch Series 7</h6>
+                                    <p>From $399 or $16.62/mo. for 24 mo.*</p>
                                 </div>
                                 <img
+                                    className="img-fluid"
                                     src="images/famous-watch.png"
                                     alt="famous"
                                 />
                             </Link>
                         </div>
-                        {(() => {
-                            let tempArr = [];
-                            for (let i = 0; i < 3; i++) {
-                                let j = (
-                                    <div className="col-3">
-                                        <Link className="famous-card bg-white">
-                                            <div className="famous-content">
-                                                <h5>Big Screen</h5>
-                                                <h6>Smart Watch Series 7</h6>
-                                                <p>
-                                                    From $399 or $16.62/mo. for
-                                                    24 mo.*
-                                                </p>
-                                            </div>
-                                            <img
-                                                className="img-fluid"
-                                                src="images/famous-watch.png"
-                                                alt="famous"
-                                            />
-                                        </Link>
-                                    </div>
-                                );
-                                tempArr.push(j);
-                            }
-                            return tempArr;
-                        })()}
+                    ))}
+                </div>
+            </Container>
+            <Container class1="speacial-wrapper py-3 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <h3 className="section-heading">Special Products</h3>
                     </div>
                 </div>
-            </section>
-            <section className="speacial-wrapper py-3 home-wrapper-2">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-12">
-                            <h3 className="section-heading">
-                                Special Products
-                            </h3>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <SpecialProduct />
-                        <SpecialProduct />
-                        <SpecialProduct />
-                    </div>
+                <div className="row">
+                    <SpecialProduct />
+                    <SpecialProduct />
+                    <SpecialProduct />
                 </div>
-            </section>
-            <section className="populer-wrapper py-3 home-wrapper-2">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-12">
-                            <h3 className="section-heading">
-                                Our populer products
-                            </h3>
-                        </div>
-                        <div className="row">
-                            <div className="col-2">
-                                <div className="card"></div>
-                            </div>
-                            <div className="col-2">
-                                <div className="card"></div>
-                            </div>
-                            {demoData7.map((item, i) => {
-                                if (i <= 3)
-                                    return <ProductCard key={i} item={item} />;
-                                else return <></>;
-                            })}
-                        </div>
+            </Container>
+            <Container class1="populer-wrapper py-3 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <h3 className="section-heading">
+                            Our populer products
+                        </h3>
                     </div>
-                </div>
-            </section>
-            <section className="marquee-wrapper py-3">
-                <div className="container-xxl">
                     <div className="row">
-                        <div className="col-12">
-                            <div className="merquee-inner-wrapper bg-white p-3 card-wrapper">
-                                <Marquee className="d-flex">
-                                    {demoData5.map((item, i) => {
-                                        return (
-                                            <div key={i} className="mx-4 w-25">
-                                                <img
-                                                    src={item.src}
-                                                    alt="brand"
-                                                />
-                                            </div>
-                                        );
-                                    })}
-                                </Marquee>
-                            </div>
+                        <div className="col-2">
+                            <div className="card"></div>
                         </div>
-                    </div>
-                </div>
-            </section>
-            <section className="blog-wrapper py-2 home-wrapper-2">
-                <div className="container-xxl">
-                    <div className="row">
-                        <div className="col-12">
-                            <h3 className="section-heading">
-                                Our Latest Blogs
-                            </h3>
+                        <div className="col-2">
+                            <div className="card"></div>
                         </div>
-                        {demoData6.map((item, i) => {
-                            return <BlogCard key={i} item={item} />;
+                        {demoData7.map((item, i) => {
+                            if (i <= 3)
+                                return <ProductCard key={i} item={item} />;
+                            else return <div key={i}></div>;
                         })}
                     </div>
                 </div>
-            </section>
+            </Container>
+            <Container class1="marquee-wrapper py-3">
+                <div className="row">
+                    <div className="col-12">
+                        <div className="merquee-inner-wrapper bg-white p-3 card-wrapper">
+                            <Marquee className="d-flex">
+                                {demoData5.map((item, i) => (
+                                    <div key={i} className="mx-4 w-25">
+                                        <img src={item.src} alt="brand" />
+                                    </div>
+                                ))}
+                            </Marquee>
+                        </div>
+                    </div>
+                </div>
+            </Container>
+            <Container class1="blog-wrapper py-2 home-wrapper-2">
+                <div className="row">
+                    <div className="col-12">
+                        <h3 className="section-heading">Our Latest Blogs</h3>
+                    </div>
+                    {demoData6.map((item, i) => (
+                        <BlogCard key={i} item={item} />
+                    ))}
+                </div>
+            </Container>
         </>
     );
 };

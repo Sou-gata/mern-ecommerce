@@ -1,95 +1,103 @@
-import React from "react";
-import { Space, Table, Tag } from "antd";
-
-const columns = [
-    {
-        title: "No",
-        dataIndex: "no",
-        key: "no",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <p>{text}</p>,
-    },
-    {
-        title: "Quantity",
-        dataIndex: "quantity",
-        key: "quantity",
-    },
-    {
-        title: "Price",
-        dataIndex: "price",
-        key: "price",
-    },
-    {
-        title: "Status",
-        key: "tags",
-        dataIndex: "tags",
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color;
-                    if (tag?.toLocaleLowerCase() === "success") {
-                        color = "green";
-                    } else if (tag?.toLocaleLowerCase() === "pending") {
-                        color = "geekblue";
-                    } else {
-                        color = "volcano";
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: "Action",
-        key: "action",
-        render: (_, record) => (
-            <Space size="middle">
-                <p>Delete</p>
-            </Space>
-        ),
-    },
-];
-const data2 = [
-    {
-        key: "1",
-        no: "#12345",
-        quantity: "2",
-        price: 100,
-        name: "John Brown",
-        tags: ["success"],
-    },
-    {
-        key: "2",
-        no: "#07684",
-        quantity: "1",
-        price: 100,
-        name: "Jim Green",
-        tags: ["Pending"],
-    },
-    {
-        key: "3",
-        no: "#07689",
-        quantity: "3",
-        price: 100,
-        name: "Joe Black",
-        tags: ["faild"],
-    },
-];
+import React, { useEffect } from "react";
+import { Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    blockUser,
+    getUsers,
+    unblockUser,
+} from "../features/customers/customerSlice";
+import { toast } from "react-toastify";
 
 const Customers = () => {
+    const customerState = useSelector((state) => state.customer.customers);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getUsers());
+    }, [dispatch]);
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+            render: (text) => <p>{text}</p>,
+        },
+        {
+            title: "Mobile No.",
+            dataIndex: "mobile",
+            key: "mobile",
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+        },
+        {
+            title: "Action",
+            key: "block",
+            dataIndex: "block",
+            width: 100,
+            render: (_, block) => {
+                return (
+                    <div>
+                        {!block.block && (
+                            <button
+                                className="btn block"
+                                onClick={async () => {
+                                    const a = await dispatch(
+                                        blockUser(block.key)
+                                    );
+                                    if (a.payload.success) {
+                                        dispatch(getUsers());
+                                        toast.success(
+                                            "User blocked successfully"
+                                        );
+                                    } else {
+                                        toast.error("Something went wrong");
+                                    }
+                                }}
+                            >
+                                Block
+                            </button>
+                        )}
+                        {block.block && (
+                            <button
+                                className="btn unblock"
+                                onClick={async () => {
+                                    const a = await dispatch(
+                                        unblockUser(block.key)
+                                    );
+                                    if (a.payload.success) {
+                                        dispatch(getUsers());
+                                        toast.success(
+                                            "User unblocked successfully"
+                                        );
+                                    } else {
+                                        toast.error("Something went wrong");
+                                    }
+                                }}
+                            >
+                                Unblock
+                            </button>
+                        )}
+                    </div>
+                );
+            },
+        },
+    ];
+    let data = [];
+    for (let i = 0; i < customerState?.length; i++) {
+        data.push({
+            key: customerState[i]._id,
+            name: customerState[i].firstname + " " + customerState[i].lastname,
+            mobile: customerState[i].mobile,
+            email: customerState[i].email,
+            block: customerState[i].isBlocked,
+        });
+    }
     return (
         <div>
             <h3 className="mb-4 title">Customers</h3>
-            <Table columns={columns} dataSource={data2} />
+            <Table columns={columns} dataSource={data} />
         </div>
     );
 };

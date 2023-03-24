@@ -18,14 +18,15 @@ const orderSchema = new mongoose.Schema(
             default: "Not Processed",
             enum: [
                 "Not Processed",
-                "Processed",
-                "Cash on Delevary",
                 "Processing",
+                "Processed",
                 "Dispatched",
                 "Cancelled",
-                "Delevared",
+                "Delivered",
             ],
         },
+        trackingId: String,
+        trackingAddress: String,
         orderby: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

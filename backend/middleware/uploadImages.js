@@ -2,14 +2,13 @@ const multer = require("multer");
 const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
-
-const multerStorage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, path.join(__dirname, "../public/images"));
+        callback(null, path.join(__dirname, "../public/images/"));
     },
     filename: function (req, file, callback) {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        callback(null, file.filename + "-" + uniqueSuffix + ".jpeg");
+        const uniquesuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        callback(null, file.fieldname + "-" + uniquesuffix + ".jpeg");
     },
 });
 
@@ -17,20 +16,18 @@ const multerFilter = (req, file, callback) => {
     if (file.mimetype.startsWith("image")) {
         callback(null, true);
     } else {
-        callback({ message: "Unsopported file format" }, false);
+        callback({ message: "Unsupported file format" }, false);
     }
 };
 
 const uploadPhoto = multer({
-    storage: multerStorage,
+    storage: storage,
     fileFilter: multerFilter,
     limits: { fileSize: 2000000 },
 });
 
 const productImgResize = async (req, res, next) => {
-    if (!req.files) {
-        return next();
-    }
+    if (!req.files) return next();
     await Promise.all(
         req.files.map(async (file) => {
             await sharp(file.path)
@@ -41,14 +38,11 @@ const productImgResize = async (req, res, next) => {
             fs.unlinkSync(`public/images/products/${file.filename}`);
         })
     );
-
     next();
 };
 
 const blogImgResize = async (req, res, next) => {
-    if (!req.files) {
-        return next();
-    }
+    if (!req.files) return next();
     await Promise.all(
         req.files.map(async (file) => {
             await sharp(file.path)
@@ -61,5 +55,4 @@ const blogImgResize = async (req, res, next) => {
     );
     next();
 };
-
 module.exports = { uploadPhoto, productImgResize, blogImgResize };

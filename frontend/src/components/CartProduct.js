@@ -5,16 +5,16 @@ import { addCommaToPrice } from "../features/additionalFunctions";
 const CartProduct = ({ product }) => {
     const [count, setCount] = useState(1);
     const [totalPrice, setTotalPrice] = useState(0);
-    const totalPriceCalc = () => {
-        let price = parseFloat(product.price);
-        let total = parseInt(count) * price;
-        total = addCommaToPrice(total);
-        setTotalPrice(total);
-        console.log(total);
-    };
+
     useEffect(() => {
+        const totalPriceCalc = () => {
+            let price = parseFloat(product.price);
+            let total = parseInt(count) * price;
+            total = addCommaToPrice(total);
+            setTotalPrice(total);
+        };
         totalPriceCalc();
-    }, [count]);
+    }, [count, product.price]);
     return (
         <>
             <div className="d-flex align-items-center justify-content-between cart-data py-0">

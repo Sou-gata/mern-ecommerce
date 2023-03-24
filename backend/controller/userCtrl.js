@@ -319,7 +319,6 @@ const userCart = asyncHandler(async (req, res) => {
     try {
         let products = [];
         const user = await User.findById(_id);
-
         const alreadyExistCart = await Cart.findOne({ orderby: user._id });
         if (alreadyExistCart) {
             alreadyExistCart.remove();
@@ -332,7 +331,7 @@ const userCart = asyncHandler(async (req, res) => {
             let getPrice = await Product.findById(cart[i]._id)
                 .select("price")
                 .exec();
-            object.price = getPrice;
+            object.price = getPrice.price;
             products.push(object);
         }
         let cartTotal = 0;
@@ -424,7 +423,6 @@ const createOrder = asyncHandler(async (req, res) => {
                 currency: "usd",
             },
             orderby: user._id,
-            orderStatus: "Cash on Delivery",
         }).save();
         let update = userCart.products.map((item) => {
             return {
@@ -442,7 +440,7 @@ const createOrder = asyncHandler(async (req, res) => {
             };
         });
         const updated = await Product.bulkWrite(update, {});
-        req.json({ ...updated, message: "success" });
+        res.json({ ...updated, message: "success" });
     } catch (error) {
         throw new Error(error.message);
     }
@@ -462,22 +460,73 @@ const getOrder = asyncHandler(async (req, res) => {
 });
 
 const updateOrderStatus = asyncHandler(async (req, res) => {
-    const { status } = req.body;
+    let { status, trackingId, trackingAddress } = req.body;
     const { id } = req.params;
     validateMongoDbId(id);
-
+    if (trackingId === undefined) trackingId = null;
+    if (trackingAddress === undefined) trackingAddress = null;
+    let data = {
+        orderStatus: status,
+        trackingId: trackingId,
+        trackingAddress: trackingAddress,
+    };
+    console.log(data);
     try {
         const updateOrderStaus = await Order.findByIdAndUpdate(
             id,
+            data,
+
             {
-                orderStatus: status,
-                paymentIntent: {
-                    status: status,
-                },
-            },
-            { new: true }
+                new: true,
+            }
         );
         res.json(updateOrderStaus);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+});
+
+const getSingleOrder = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    validateMongoDbId(id);
+    try {
+        const order = await Order.findById(id)
+            .populate("products.product")
+            .populate("orderby");
+        res.json(order);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+});
+const getOrders = asyncHandler(async (req, res) => {
+    try {
+        const allOrder = await Order.find()
+            .populate("products.product")
+            .populate("orderby");
+        res.json(allOrder);
+    } catch (error) {
+        throw new Error(error.message);
+    }
+});
+const verifyLogin = asyncHandler(async (req, res) => {
+    const { token } = req.body;
+    try {
+        if (token) {
+            const decoded = jwt.verify(token, process.env.JWT_SECRATE);
+            const user = await User.findById(decoded?.id);
+            const isAdmin = user?.role
+                ? user?.role?.toLowerCase() === "admin"
+                : false;
+            if (user) {
+                if (isAdmin) {
+                    res.json({ success: true, isAdmin });
+                } else {
+                    res.json({ success: true });
+                }
+            } else {
+                res.json({ success: false });
+            }
+        }
     } catch (error) {
         throw new Error(error.message);
     }
@@ -507,4 +556,7 @@ module.exports = {
     createOrder,
     getOrder,
     updateOrderStatus,
+    getOrders,
+    getSingleOrder,
+    verifyLogin,
 };
